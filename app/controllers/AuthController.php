@@ -14,7 +14,7 @@ class AuthController {
                 header("Location: index.php?action=dashboard");
                 exit;
             } else {
-                $error = "Sai tài khoản hoặc mật khẩu!";
+                $error = "Sai tài khoản!";
             }
         }
 
@@ -25,5 +25,25 @@ class AuthController {
         session_start();
         session_destroy();
         header("Location: index.php?action=login");
+    }
+
+    public function register() {
+
+        if ($_POST) {
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+
+            $db = (new Database())->connect();
+
+            $sql = "INSERT INTO users(username,password,role)
+                    VALUES (?, ?, 'operator')";
+
+            $stmt = $db->prepare($sql);
+            $stmt->execute([$username, $password]);
+
+            header("Location: index.php?action=login");
+        }
+
+        require "../app/views/auth/register.php";
     }
 }

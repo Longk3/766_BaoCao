@@ -26,6 +26,17 @@ class Order {
         return $this->conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getByShipper($shipper_id) {
+        $sql = "SELECT o.*, os.status_name
+                FROM orders o
+                JOIN assignment a ON o.order_id = a.order_id
+                JOIN order_status os ON o.status_id = os.status_id
+                WHERE a.shipper_id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$shipper_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function create($customer_id, $address, $amount) {
         $sql = "INSERT INTO orders(customer_id, order_date, delivery_address, total_amount, status_id)
                 VALUES (?, NOW(), ?, ?, 1)";
