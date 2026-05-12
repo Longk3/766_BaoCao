@@ -10,7 +10,7 @@ class CustomerController {
     }
     public function create()
     {
-        require "../app/views/customers/create.php";
+        require "../app/views/customer/create.php";
     }
 
     public function store()
@@ -33,21 +33,9 @@ class CustomerController {
             $_POST['address']
         ]);
 
-        header("Location: ?action=customers");
+        header("Location: ?action=customer");
     }
 
-    public function show()
-    {
-        $id = $_GET['id'];
-
-        require_once "../app/models/Customer.php";
-
-        $model = new Customer();
-
-        $customer = $model->find($id);
-
-        require "../app/views/customers/show.php";
-    }
 
     public function edit()
     {
@@ -59,7 +47,7 @@ class CustomerController {
 
         $customer = $model->find($id);
 
-        require "../app/views/customers/edit.php";
+        require "../app/views/customer/edit.php";
     }
 
     public function update()
@@ -87,7 +75,7 @@ class CustomerController {
             $id
         ]);
 
-        header("Location: ?action=customers");
+        header("Location: ?action=customer");
     }
 
     public function delete()
@@ -105,6 +93,6 @@ class CustomerController {
 
         $stmt->execute([$id]);
 
-        header("Location: ?action=customers");
+        header("Location: ?action=customer");
     }
 }

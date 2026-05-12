@@ -25,12 +25,7 @@ class="btn btn-danger">
 <td><?= $c['address'] ?></td>
 <td>
 
-<a href="?action=showCustomer&id=<?= $c['customer_id'] ?>"
-class="btn btn-info btn-sm">
 
-Chi tiết
-
-</a>
 
 <a href="?action=editCustomer&id=<?= $c['customer_id'] ?>"
 class="btn btn-warning btn-sm">

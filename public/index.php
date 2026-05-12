@@ -69,12 +69,6 @@ case 'storeCustomer':
     $controller->store();
 break;
 
-case 'showCustomer':
-    require_once "../app/controllers/CustomerController.php";
-    $controller = new CustomerController();
-    $controller->show();
-break;
-
 case 'editCustomer':
     require_once "../app/controllers/CustomerController.php";
     $controller = new CustomerController();
