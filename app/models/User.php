@@ -1,46 +1,125 @@
 <?php
+
 require_once "../app/config/database.php";
 
-class User {
+class User
+{
     private $conn;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->conn = (new Database())->connect();
     }
 
-    public function login($u, $p) {
-        $stmt = $this->conn->prepare("SELECT * FROM users WHERE username=?");
-        $stmt->execute([$u]);
+    // =========================
+    // LOGIN
+    // =========================
+    public function login($username, $password)
+    {
+        $sql = "SELECT * FROM users WHERE username=?";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([$username]);
+
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user && $p == $user['password']) {
+        // password thường
+        if ($user && $password == $user['password']) {
             return $user;
         }
+
+        // password hash
+        if ($user && password_verify($password, $user['password'])) {
+            return $user;
+        }
+
         return false;
     }
 
-    public function getAll() {
-            return $this->conn->query("SELECT * FROM users")->fetchAll(PDO::FETCH_ASSOC);
-        }
+    // =========================
+    // GET ALL
+    // =========================
+    public function getAll()
+    {
+        $sql = "SELECT * FROM users ORDER BY id DESC";
 
-    public function find($id) {
-        $stmt = $this->conn->prepare("SELECT * FROM users WHERE id=?");
+        return $this->conn
+            ->query($sql)
+            ->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // =========================
+    // FIND
+    // =========================
+    public function find($id)
+    {
+        $sql = "SELECT * FROM users WHERE id=?";
+
+        $stmt = $this->conn->prepare($sql);
+
         $stmt->execute([$id]);
+
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function create($u, $p, $role) {
-        $sql = "INSERT INTO users(username,password,role) VALUES(?,?,?)";
-        return $this->conn->prepare($sql)->execute([$u,$p,$role]);
+    // =========================
+    // CREATE
+    // =========================
+    public function create($data)
+    {
+        $sql = "INSERT INTO users
+        (
+            full_name,
+            username,
+            password,
+            role
+        )
+        VALUES
+        (
+            ?, ?, ?, ?
+        )";
+
+        $stmt = $this->conn->prepare($sql);
+
+        return $stmt->execute([
+            $data['full_name'],
+            $data['username'],
+            $data['password'],
+            $data['role']
+        ]);
     }
 
-    public function update($id, $u, $role) {
-        $sql = "UPDATE users SET username=?, role=? WHERE id=?";
-        return $this->conn->prepare($sql)->execute([$u,$role,$id]);
+    // =========================
+    // UPDATE
+    // =========================
+    public function update($id, $data)
+    {
+        $sql = "UPDATE users SET
+        full_name=?,
+        username=?,
+        role=?
+        WHERE id=?";
+
+        $stmt = $this->conn->prepare($sql);
+
+        return $stmt->execute([
+            $data['full_name'],
+            $data['username'],
+            $data['role'],
+            $id
+        ]);
     }
 
-    public function delete($id) {
+    // =========================
+    // DELETE
+    // =========================
+    public function delete($id)
+    {
         $sql = "DELETE FROM users WHERE id=?";
-        return $this->conn->prepare($sql)->execute([$id]);
+
+        $stmt = $this->conn->prepare($sql);
+
+        return $stmt->execute([$id]);
     }
 }

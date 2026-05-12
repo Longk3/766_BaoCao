@@ -9,4 +9,15 @@ class Customer {
     public function getAll() {
         return $this->conn->query("SELECT * FROM customer")->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function find($id)
+    {
+        $sql = "SELECT * FROM customer
+        WHERE customer_id=?";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([$id]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

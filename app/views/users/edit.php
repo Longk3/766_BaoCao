@@ -1,17 +1,65 @@
 <?php require "../app/views/layout/header.php"; ?>
 
-<h2>Sửa nhân viên</h2>
+<div class="card-box">
+
+<h2>✏️ Sửa nhân viên</h2>
 
 <form method="POST">
-<input name="username" value="<?= $user['username'] ?>" class="form-control mb-2">
 
-<select name="role" class="form-control mb-2">
-<option value="operator" <?= $user['role']=='operator'?'selected':'' ?>>Operator</option>
-<option value="shipper" <?= $user['role']=='shipper'?'selected':'' ?>>Shipper</option>
-<option value="admin" <?= $user['role']=='admin'?'selected':'' ?>>Admin</option>
+<div class="mb-3">
+
+<label>Họ tên</label>
+
+<input type="text"
+name="full_name"
+class="form-control"
+value="<?= $user['full_name'] ?>">
+
+</div>
+
+<div class="mb-3">
+
+<label>Username</label>
+
+<input type="text"
+name="username"
+class="form-control"
+value="<?= $user['username'] ?>">
+
+</div>
+
+<div class="mb-3">
+
+<label>Role</label>
+
+<select name="role"
+class="form-select">
+
+<option value="admin"
+<?= $user['role']=='admin'?'selected':'' ?>>
+Admin
+</option>
+
+<option value="operator"
+<?= $user['role']=='operator'?'selected':'' ?>>
+Operator
+</option>
+
+<option value="shipper"
+<?= $user['role']=='shipper'?'selected':'' ?>>
+Shipper
+</option>
+
 </select>
 
-<button class="btn btn-primary">Cập nhật</button>
+</div>
+
+<button class="btn btn-warning">
+Cập nhật
+</button>
+
 </form>
+
+</div>
 
 <?php require "../app/views/layout/footer.php"; ?>

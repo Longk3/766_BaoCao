@@ -49,4 +49,26 @@ class Order {
         $stmt = $this->conn->prepare($sql);
         return $stmt->execute([$status, $id]);
     }
+
+    public function find($id)
+    {
+        $sql = "
+        SELECT o.*,
+            c.full_name AS customer_name,
+            s.full_name AS shipper_name,
+            os.status_name
+        FROM orders o
+        JOIN customer c ON o.customer_id = c.customer_id
+        JOIN order_status os ON o.status_id = os.status_id
+        LEFT JOIN assignment a ON o.order_id = a.order_id
+        LEFT JOIN shipper s ON a.shipper_id = s.shipper_id
+        WHERE o.order_id = ?
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([$id]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

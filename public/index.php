@@ -18,21 +18,145 @@ case 'logout': (new AuthController())->logout(); break;
 case 'dashboard': (new DashboardController())->index(); break;
 
 case 'orders': (new OrderController())->index(); break;
-case 'createOrder': (new OrderController())->create(); break;
+case 'createOrder':
+    require_once "../app/controllers/OrderController.php";
+    $controller = new OrderController();
+    $controller->create();
+break;
+
+case 'storeOrder':
+    require_once "../app/controllers/OrderController.php";
+    $controller = new OrderController();
+    $controller->store();
+break;
+case 'editOrder':
+    require_once "../app/controllers/OrderController.php";
+    $controller = new OrderController();
+    $controller->edit();
+break;
+
+case 'updateOrder':
+    require_once "../app/controllers/OrderController.php";
+    $controller = new OrderController();
+    $controller->update();
+break;
+
+case 'deleteOrder':
+    require_once "../app/controllers/OrderController.php";
+    $controller = new OrderController();
+    $controller->delete();
+break;
+
+case 'showOrder':
+    require_once "../app/controllers/OrderController.php";
+    $controller = new OrderController();
+    $controller->show();
+break;
 case 'updateStatus': (new OrderController())->updateStatus(); break;
 case 'assign': (new AssignmentController())->assign();break;
 case 'myOrders': (new OrderController())->myOrders(); break;
 
 case 'customers': (new CustomerController())->index(); break;
+case 'createCustomer':
+    require_once "../app/controllers/CustomerController.php";
+    $controller = new CustomerController();
+    $controller->create();
+break;
+
+case 'storeCustomer':
+    require_once "../app/controllers/CustomerController.php";
+    $controller = new CustomerController();
+    $controller->store();
+break;
+
+case 'showCustomer':
+    require_once "../app/controllers/CustomerController.php";
+    $controller = new CustomerController();
+    $controller->show();
+break;
+
+case 'editCustomer':
+    require_once "../app/controllers/CustomerController.php";
+    $controller = new CustomerController();
+    $controller->edit();
+break;
+
+case 'updateCustomer':
+    require_once "../app/controllers/CustomerController.php";
+    $controller = new CustomerController();
+    $controller->update();
+break;
+
+case 'deleteCustomer':
+    require_once "../app/controllers/CustomerController.php";
+    $controller = new CustomerController();
+    $controller->delete();
+break;
 case 'shippers': (new ShipperController())->index(); break;
+case 'createShipper':
+    require_once "../app/controllers/ShipperController.php";
+    $controller = new ShipperController();
+    $controller->create();
+break;
+
+case 'storeShipper':
+    require_once "../app/controllers/ShipperController.php";
+    $controller = new ShipperController();
+    $controller->store();
+break;
+
+case 'showShipper':
+    require_once "../app/controllers/ShipperController.php";
+    $controller = new ShipperController();
+    $controller->show();
+break;
+
+case 'editShipper':
+    require_once "../app/controllers/ShipperController.php";
+    $controller = new ShipperController();
+    $controller->edit();
+break;
+
+case 'updateShipper':
+    require_once "../app/controllers/ShipperController.php";
+    $controller = new ShipperController();
+    $controller->update();
+break;
+
+case 'deleteShipper':
+    require_once "../app/controllers/ShipperController.php";
+    $controller = new ShipperController();
+    $controller->delete();
+break;
 case 'home': require "../app/views/home/index.php"; break;
 
 case 'register': (new AuthController())->register(); break;
 
-case 'users': (new UserController())->index(); break;
-case 'createUser': (new UserController())->create(); break;
-case 'editUser': (new UserController())->edit(); break;
-case 'deleteUser': (new UserController())->delete(); break;
+// USERS
+
+case 'users':
+    require_once "../app/controllers/UserController.php";
+    $controller = new UserController();
+    $controller->index();
+break;
+
+case 'user_create':
+    require_once "../app/controllers/UserController.php";
+    $controller = new UserController();
+    $controller->create();
+break;
+
+case 'user_edit':
+    require_once "../app/controllers/UserController.php";
+    $controller = new UserController();
+    $controller->edit();
+break;
+
+case 'user_delete':
+    require_once "../app/controllers/UserController.php";
+    $controller = new UserController();
+    $controller->delete();
+break;
 
 default: echo "404";
 }

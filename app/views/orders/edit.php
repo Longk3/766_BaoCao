@@ -2,19 +2,24 @@
 
 <div class="card-box">
 
-<h2 class="mb-4">➕ Tạo đơn hàng mới</h2>
+<h2>✏️ Sửa đơn hàng</h2>
 
-<form method="POST" action="?action=storeOrder">
+<form method="POST" action="?action=updateOrder">
+
+<input type="hidden"
+name="order_id"
+value="<?= $order['order_id'] ?>">
 
 <div class="mb-3">
 
 <label>Khách hàng</label>
 
-<select name="customer_id" class="form-select" required>
+<select name="customer_id" class="form-select">
 
 <?php foreach($customers as $c): ?>
 
-<option value="<?= $c['customer_id'] ?>">
+<option value="<?= $c['customer_id'] ?>"
+<?= $c['customer_id']==$order['customer_id']?'selected':'' ?>>
 
 <?= $c['full_name'] ?>
 
@@ -33,7 +38,7 @@
 <input type="text"
 name="delivery_address"
 class="form-control"
-required>
+value="<?= $order['delivery_address'] ?>">
 
 </div>
 
@@ -44,13 +49,13 @@ required>
 <input type="number"
 name="total_amount"
 class="form-control"
-required>
+value="<?= $order['total_amount'] ?>">
 
 </div>
 
 <div class="mb-3">
 
-<label>Shipper giao hàng</label>
+<label>Shipper</label>
 
 <select name="shipper_id" class="form-select">
 
@@ -58,7 +63,7 @@ required>
 
 <option value="<?= $s['shipper_id'] ?>">
 
-<?= $s['full_name'] ?> - <?= $s['area'] ?>
+<?= $s['full_name'] ?>
 
 </option>
 
@@ -69,10 +74,11 @@ required>
 </div>
 
 <button class="btn btn-danger">
-Lưu đơn hàng
+Cập nhật
 </button>
 
-<a href="?action=orders" class="btn btn-secondary">
+<a href="?action=orders"
+class="btn btn-secondary">
 Quay lại
 </a>
 

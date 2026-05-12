@@ -1,30 +1,70 @@
 <?php require "../app/views/layout/header.php"; ?>
 
-<h2>Quản lý nhân viên</h2>
+<div class="card-box">
 
-<a href="?action=createUser" class="btn btn-primary mb-2">Thêm</a>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Quản lý nhân viên</h2>
 
-<table class="table table-bordered">
+    <a href="index.php?action=user_create"
+       class="btn btn-primary">
+       + Thêm nhân viên
+    </a>
+</div>
+
+<table class="table table-bordered table-hover bg-white">
+
+<thead class="table-dark">
+
 <tr>
-<th>ID</th>
-<th>Username</th>
-<th>Role</th>
-<th>Action</th>
+    <th>STT</th>
+    <th>Họ tên</th>
+    <th>Username</th>
+    <th>Role</th>
+    <th>Hành động</th>
 </tr>
 
-<?php foreach($data as $u): ?>
+</thead>
+
+<tbody>
+
+<?php $stt = 1; ?>
+
+<?php foreach($users as $u): ?>
+
 <tr>
-<td><?= $u['id'] ?></td>
+
+<td><?= $stt++ ?></td>
+
+<td><?= $u['full_name'] ?></td>
+
 <td><?= $u['username'] ?></td>
+
 <td><?= $u['role'] ?></td>
+
 <td>
-<a href="?action=editUser&id=<?= $u['id'] ?>" class="btn btn-warning btn-sm">Sửa</a>
-<a href="?action=deleteUser&id=<?= $u['id'] ?>" class="btn btn-danger btn-sm"
-onclick="return confirm('Xóa?')">Xóa</a>
+
+<a href="index.php?action=user_edit&id=<?= $u['id'] ?>"
+class="btn btn-warning btn-sm">
+
+Sửa
+
+</a>
+
+<a href="index.php?action=user_delete&id=<?= $u['id'] ?>"
+class="btn btn-danger btn-sm">
+
+Xóa
+
+</a>
+
 </td>
+
 </tr>
+
 <?php endforeach; ?>
 
-</table>
+</tbody>
+
+</div>
 
 <?php require "../app/views/layout/footer.php"; ?>
