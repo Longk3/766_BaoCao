@@ -85,4 +85,35 @@ class Shipper
 
         return $stmt->execute([$id]);
     }
+
+    public function countAll()
+    {
+        return $this->conn
+            ->query("SELECT COUNT(*) FROM shipper")
+            ->fetchColumn();
+    }
+
+    public function getHistoryByShipper($shipper_id)
+    {
+        $sql = "SELECT
+                    o.order_id,
+                    c.full_name AS customer_name,
+                    os.status_name
+                FROM orders o
+                JOIN assignment a
+                    ON o.order_id = a.order_id
+                JOIN customer c
+                    ON o.customer_id = c.customer_id
+                JOIN order_status os
+                    ON o.status_id = os.status_id
+                WHERE a.shipper_id = ?
+                AND o.status_id IN (4,5,6)
+                ORDER BY o.order_id DESC";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([$shipper_id]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

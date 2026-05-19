@@ -52,10 +52,27 @@ case 'showOrder':
     $controller = new OrderController();
     $controller->show();
 break;
-case 'updateStatus': (new OrderController())->updateStatus(); break;
+case 'update_order_status':
+    require_once "../app/controllers/OrderController.php";
+    (new OrderController())->updateStatus();
+break;
 case 'assign': (new AssignmentController())->assign();break;
-case 'myOrders': (new OrderController())->myOrders(); break;
+case 'my_orders':
 
+    require_once "../app/controllers/ShipperController.php";
+
+    (new ShipperController())->myOrders();
+
+break;
+
+
+case 'shipper_history':
+
+    require_once "../app/controllers/ShipperController.php";
+
+    (new ShipperController())->history();
+
+break;
 case 'customers': (new CustomerController())->index(); break;
 case 'createCustomer':
     require_once "../app/controllers/CustomerController.php";

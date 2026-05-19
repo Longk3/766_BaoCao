@@ -4,19 +4,19 @@
 
 <h2>📦 Quản lý đơn hàng</h2>
 
-<a href="?action=createOrder" class="btn btn-danger">
-+ Tạo đơn hàng
+<a href="?action=createOrder" class="btn btn-danger mb-3">
+    + Tạo đơn hàng
 </a>
 
 <table class="table table-hover">
 
 <thead>
 <tr>
-<th>ID</th>
-<th>Khách hàng</th>
-<th>Trạng thái</th>
-<th>Cập nhật</th>
-<th>Hành động</th>
+    <th>ID</th>
+    <th>Khách hàng</th>
+    <th>Trạng thái</th>
+    <th>Cập nhật</th>
+    <th>Hành động</th>
 </tr>
 </thead>
 
@@ -35,10 +35,10 @@
 <?php
 $status = $o['status_name'];
 
-if($status=='Giao thành công'){
+if($status == 'Giao thành công'){
     echo "<span class='badge-status bg-success2'>$status</span>";
 }
-elseif($status=='Đang giao'){
+elseif($status == 'Đang giao'){
     echo "<span class='badge-status bg-warning2'>$status</span>";
 }
 else{
@@ -50,25 +50,33 @@ else{
 
 <td>
 
-<form method="POST" action="?action=updateStatus">
+<form method="POST" action="index.php?action=update_order_status">
 
-<input type="hidden"
-name="order_id"
-value="<?= $o['order_id'] ?>">
+    <input type="hidden"
+           name="order_id"
+           value="<?= $o['order_id'] ?>">
 
-<select name="status_id" class="form-select">
+    <select name="status_id" class="form-select">
 
-<option value="1">Chờ xác nhận</option>
-<option value="2">Đã xác nhận</option>
-<option value="3">Đang giao</option>
-<option value="4">Giao thành công</option>
-<option value="5">Giao thất bại</option>
+        <?php foreach($statuses as $s): ?>
 
-</select>
+            <option value="<?= $s['status_id'] ?>"
 
-<button class="btn btn-danger mt-2">
-Cập nhật
-</button>
+                <?= ($o['status_id'] == $s['status_id']) ? 'selected' : '' ?>
+
+            >
+
+                <?= $s['status_name'] ?>
+
+            </option>
+
+        <?php endforeach; ?>
+
+    </select>
+
+    <button class="btn btn-primary btn-sm mt-2">
+        Cập nhật
+    </button>
 
 </form>
 

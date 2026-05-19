@@ -1,6 +1,7 @@
 <?php
 
 require_once "../app/models/Shipper.php";
+require_once "../app/models/Order.php";
 require_once "../app/libs/AuthMiddleware.php";
 
 class ShipperController
@@ -96,5 +97,29 @@ class ShipperController
         $this->model->delete($id);
 
         header("Location: ?action=shippers");
+    }
+
+    // Đơn hàng của shipper
+    public function myOrders()
+    {
+        AuthMiddleware::role(['shipper']);
+
+        $shipper_id = $_SESSION['user']['shipper_id'];
+
+        $orders = (new Order())->getByShipper($shipper_id);
+
+        require "../app/views/shipper/my_orders.php";
+    }
+
+    // Lịch sử giao hàng
+    public function history()
+    {
+        AuthMiddleware::role(['shipper']);
+
+        $shipper_id = $_SESSION['user']['shipper_id'];
+
+        $orders = (new Order())->getHistoryByShipper($shipper_id);
+
+        require "../app/views/shipper/history.php";
     }
 }

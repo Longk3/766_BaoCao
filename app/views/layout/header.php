@@ -8,10 +8,12 @@ $u = $_SESSION['user'] ?? null;
 
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
+
 <meta charset="UTF-8">
 
-<title>Admin Dashboard</title>
+<title>Hệ thống giao hàng</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -30,27 +32,35 @@ body{
     background:#f4f6f9;
 }
 
+/* ================= SIDEBAR ================= */
+
 .sidebar{
     position:fixed;
     width:260px;
     height:100vh;
     background:#1f2937;
     padding:20px;
+    overflow-y:auto;
 }
 
 .logo{
     color:white;
-    font-size:32px;
+    font-size:30px;
     font-weight:bold;
     margin-bottom:30px;
+    text-align:center;
 }
 
 .user-box{
     background:#374151;
     padding:15px;
-    border-radius:10px;
+    border-radius:12px;
     color:white;
     margin-bottom:30px;
+}
+
+.user-box h5{
+    margin-bottom:5px;
 }
 
 .menu a{
@@ -61,11 +71,19 @@ body{
     border-radius:10px;
     margin-bottom:10px;
     transition:0.3s;
+    font-size:15px;
 }
 
 .menu a:hover{
     background:#d70018;
+    transform:translateX(5px);
 }
+
+.menu i{
+    margin-right:10px;
+}
+
+/* ================= CONTENT ================= */
 
 .content{
     margin-left:260px;
@@ -98,6 +116,8 @@ body{
     font-size:14px;
 }
 
+/* STATUS */
+
 .bg-success2{
     background:#16a34a;
 }
@@ -110,11 +130,33 @@ body{
     background:#dc2626;
 }
 
+.bg-primary2{
+    background:#2563eb;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+.sidebar{
+    width:100%;
+    height:auto;
+    position:relative;
+}
+
+.content{
+    margin-left:0;
+}
+
+}
+
 </style>
 
 </head>
 
 <body>
+
+<!-- ================= SIDEBAR ================= -->
 
 <div class="sidebar">
 
@@ -123,11 +165,32 @@ body{
 </div>
 
 <div class="user-box">
-<h5><?= $u['username'] ?? '' ?></h5>
-<p><?= $u['role'] ?? '' ?></p>
+
+<h5>
+<?= $u['username'] ?? '' ?>
+</h5>
+
+<p style="margin-bottom:5px;">
+<?= strtoupper($u['role'] ?? '') ?>
+</p>
+
+<?php if(($u['role'] ?? '') == 'shipper'): ?>
+
+<hr style="border-color:#666;">
+
+<p style="margin:0;font-size:14px;">
+👤 <?= $u['full_name'] ?? '' ?>
+</p>
+
+<?php endif; ?>
+
 </div>
 
 <div class="menu">
+
+<!-- ================= ADMIN ================= -->
+
+<?php if(($u['role'] ?? '') == 'admin'): ?>
 
 <a href="?action=dashboard">
 <i class="bi bi-speedometer2"></i>
@@ -136,27 +199,67 @@ Dashboard
 
 <a href="?action=orders">
 <i class="bi bi-box-seam"></i>
-Đơn hàng
+Quản lý đơn hàng
 </a>
 
 <a href="?action=customers">
 <i class="bi bi-people"></i>
-Khách hàng
+Quản lý khách hàng
 </a>
 
 <a href="?action=shippers">
 <i class="bi bi-truck"></i>
-Shipper
+Quản lý shipper
 </a>
-
-<?php if(($u['role'] ?? '')=='admin'): ?>
 
 <a href="?action=users">
 <i class="bi bi-person-gear"></i>
-Nhân viên
+Quản lý nhân viên
 </a>
 
 <?php endif; ?>
+
+
+<!-- ================= OPERATOR ================= -->
+
+<?php if(($u['role'] ?? '') == 'operator'): ?>
+
+<a href="?action=dashboard">
+<i class="bi bi-speedometer2"></i>
+Dashboard
+</a>
+
+<a href="?action=orders">
+<i class="bi bi-box-seam"></i>
+Quản lý đơn hàng
+</a>
+
+<a href="?action=customers">
+<i class="bi bi-people"></i>
+Quản lý khách hàng
+</a>
+
+<?php endif; ?>
+
+
+<!-- ================= SHIPPER ================= -->
+
+<?php if(($u['role'] ?? '') == 'shipper'): ?>
+
+<a href="?action=my_orders">
+<i class="bi bi-box-seam"></i>
+Đơn hàng của tôi
+</a>
+
+<a href="?action=shipper_history">
+<i class="bi bi-clock-history"></i>
+Lịch sử giao hàng
+</a>
+
+<?php endif; ?>
+
+
+<!-- ================= LOGOUT ================= -->
 
 <a href="?action=logout">
 <i class="bi bi-box-arrow-right"></i>
@@ -167,8 +270,14 @@ Nhân viên
 
 </div>
 
+<!-- ================= CONTENT ================= -->
+
 <div class="content">
 
 <div class="topbar">
-<h3>Hệ thống quản lý giao hàng</h3>
+
+<h3>
+🚚 Hệ thống quản lý giao hàng
+</h3>
+
 </div>

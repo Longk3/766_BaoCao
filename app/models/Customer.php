@@ -20,4 +20,11 @@ class Customer {
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function countAll()
+    {
+        return $this->conn
+            ->query("SELECT COUNT(*) FROM customer")
+            ->fetchColumn();
+    }
 }

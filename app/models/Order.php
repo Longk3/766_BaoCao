@@ -9,31 +9,66 @@ class Order {
     }
 
     public function getAll() {
+
         $sql = "SELECT 
+                    o.order_id,
+
+                    o.status_id,
+
+                    c.full_name AS customer_name,
+
+                    o.delivery_address,
+
+                    o.total_amount,
+
+                    os.status_name,
+
+                    s.full_name AS shipper_name
+
+                FROM orders o
+
+                LEFT JOIN customer c 
+                ON o.customer_id = c.customer_id
+
+                LEFT JOIN order_status os 
+                ON o.status_id = os.status_id
+
+                LEFT JOIN assignment a 
+                ON o.order_id = a.order_id
+
+                LEFT JOIN shipper s 
+                ON a.shipper_id = s.shipper_id
+
+                ORDER BY o.order_id DESC";
+
+        return $this->conn
+            ->query($sql)
+            ->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getByShipper($shipper_id)
+    {
+        $sql = "SELECT
                     o.order_id,
                     c.full_name AS customer_name,
                     o.delivery_address,
                     o.total_amount,
                     os.status_name,
-                    s.full_name AS shipper_name
+                    o.status_id
                 FROM orders o
-                LEFT JOIN customer c ON o.customer_id = c.customer_id
-                LEFT JOIN order_status os ON o.status_id = os.status_id
-                LEFT JOIN assignment a ON o.order_id = a.order_id
-                LEFT JOIN shipper s ON a.shipper_id = s.shipper_id
+                JOIN customer c
+                    ON o.customer_id = c.customer_id
+                JOIN order_status os
+                    ON o.status_id = os.status_id
+                JOIN assignment a
+                    ON o.order_id = a.order_id
+                WHERE a.shipper_id = ?
                 ORDER BY o.order_id DESC";
 
-        return $this->conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function getByShipper($shipper_id) {
-        $sql = "SELECT o.*, os.status_name
-                FROM orders o
-                JOIN assignment a ON o.order_id = a.order_id
-                JOIN order_status os ON o.status_id = os.status_id
-                WHERE a.shipper_id = ?";
         $stmt = $this->conn->prepare($sql);
+
         $stmt->execute([$shipper_id]);
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -70,5 +105,47 @@ class Order {
         $stmt->execute([$id]);
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function countAll()
+    {
+        return $this->conn
+            ->query("SELECT COUNT(*) FROM orders")
+            ->fetchColumn();
+    }
+
+    public function countByStatus($status)
+    {
+        $sql = "SELECT COUNT(*) FROM orders WHERE status_id=?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$status]);
+
+        return $stmt->fetchColumn();
+    }
+
+    public function getHistoryByShipper($shipper_id)
+    {
+        $sql = "SELECT
+                    o.order_id,
+                    c.full_name AS customer_name,
+                    o.delivery_address,
+                    o.total_amount,
+                    os.status_name
+                FROM orders o
+                JOIN customer c
+                    ON o.customer_id = c.customer_id
+                JOIN order_status os
+                    ON o.status_id = os.status_id
+                JOIN assignment a
+                    ON o.order_id = a.order_id
+                WHERE a.shipper_id = ?
+                AND o.status_id IN (4,5,6)
+                ORDER BY o.order_id DESC";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([$shipper_id]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
