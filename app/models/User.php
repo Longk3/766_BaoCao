@@ -103,13 +103,51 @@ class User
 
         $stmt = $this->conn->prepare($sql);
 
-        return $stmt->execute([
-            $data['full_name'],
+        return $stmt->execute([     
+            $data['full_name'], 
             $data['username'],
             $data['role'],
             $id
         ]);
     }
+
+    // =========================
+    // UPDATE PROFILE
+    // =========================
+    public function updateProfile($id, $full_name)
+    {
+        $sql = "UPDATE users
+                SET full_name=?
+                WHERE id=?";
+
+        $stmt = $this->conn->prepare($sql);
+
+        return $stmt->execute([
+            $full_name,
+            $id
+        ]);
+    }
+
+    // =========================
+    // CHANGE PASSWORD
+    // =========================
+    public function changePassword($id, $password)
+    {
+        // Nếu muốn mã hóa mật khẩu:
+        // $password = password_hash($password, PASSWORD_DEFAULT);
+
+        $sql = "UPDATE users
+                SET password=?
+                WHERE id=?";
+
+        $stmt = $this->conn->prepare($sql);
+
+        return $stmt->execute([
+            $password,
+            $id
+        ]);
+    }
+
 
     // =========================
     // DELETE

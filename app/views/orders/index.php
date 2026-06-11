@@ -4,6 +4,71 @@
 
 <h2>📦 Quản lý đơn hàng</h2>
 
+<form method="GET" class="row mb-3">
+
+    <input type="hidden"
+           name="action"
+           value="orders">
+
+    <div class="col-md-4">
+
+        <input
+            type="text"
+            name="keyword"
+            class="form-control"
+            placeholder="Nhập mã đơn, khách hàng hoặc địa chỉ"
+            value="<?= $_GET['keyword'] ?? '' ?>">
+
+    </div>
+
+    <div class="col-md-3">
+
+        <select
+            name="status"
+            class="form-select">
+
+            <option value="">
+                Tất cả trạng thái
+            </option>
+
+            <?php foreach($statuses as $s): ?>
+
+                <option
+                    value="<?= $s['status_id'] ?>"
+
+                    <?= (($_GET['status'] ?? '') == $s['status_id']) ? 'selected' : '' ?>
+
+                >
+
+                    <?= $s['status_name'] ?>
+
+                </option>
+
+            <?php endforeach; ?>
+
+        </select>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <button class="btn btn-primary">
+
+            🔍 Tìm kiếm
+
+        </button>
+
+        <a href="?action=orders"
+           class="btn btn-secondary">
+
+            Làm mới
+
+        </a>
+
+    </div>
+
+</form>
+
 <a href="?action=createOrder" class="btn btn-danger mb-3">
     + Tạo đơn hàng
 </a>

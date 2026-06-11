@@ -18,6 +18,26 @@
         </div>
     </div>
 
+    <!-- Chờ xác nhận -->
+    <div class="col-md-3">
+        <div class="card shadow border-0 bg-secondary text-white">
+            <div class="card-body">
+                <h5>Chờ xác nhận</h5>
+                <h2><?= $pending ?></h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Đã xác nhận -->
+    <div class="col-md-3">
+        <div class="card shadow border-0 bg-info text-white">
+            <div class="card-body">
+                <h5>Đã xác nhận</h5>
+                <h2><?= $confirmed ?></h2>
+            </div>
+        </div>
+    </div>
+
     <!-- Đang giao -->
     <div class="col-md-3">
         <div class="card shadow border-0 bg-warning text-white">
@@ -38,7 +58,7 @@
         </div>
     </div>
 
-    <!-- Thất bại -->
+    <!-- Giao thất bại -->
     <div class="col-md-3">
         <div class="card shadow border-0 bg-danger text-white">
             <div class="card-body">

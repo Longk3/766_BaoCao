@@ -15,7 +15,7 @@ class Order {
 
                     o.status_id,
 
-                    c.full_name AS customer_name,
+                    c.full_name AS customer_name,       
 
                     o.delivery_address,
 
@@ -148,4 +148,66 @@ class Order {
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+    public function searchAndFilter($keyword = '', $status = '')
+{
+    $sql = "
+        SELECT
+            o.order_id,
+            o.status_id,
+            c.full_name AS customer_name,
+            o.delivery_address,
+            o.total_amount,
+            os.status_name,
+            s.full_name AS shipper_name
+
+        FROM orders o
+
+        LEFT JOIN customer c
+            ON o.customer_id = c.customer_id
+
+        LEFT JOIN order_status os
+            ON o.status_id = os.status_id
+
+        LEFT JOIN assignment a
+            ON o.order_id = a.order_id
+
+        LEFT JOIN shipper s
+            ON a.shipper_id = s.shipper_id
+
+        WHERE 1=1
+    ";
+
+    $params = [];
+
+    if (!empty($keyword))
+    {
+        $sql .= "
+            AND (
+                c.full_name LIKE ?
+                OR o.order_id LIKE ?
+                OR o.delivery_address LIKE ?
+            )
+        ";
+
+        $params[] = "%$keyword%";
+        $params[] = "%$keyword%";
+        $params[] = "%$keyword%";
+    }
+
+    if (!empty($status))
+    {
+        $sql .= " AND o.status_id = ? ";
+
+        $params[] = $status;
+    }
+
+    $sql .= " ORDER BY o.order_id DESC";
+
+    $stmt = $this->conn->prepare($sql);
+
+    $stmt->execute($params);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }

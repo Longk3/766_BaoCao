@@ -7,6 +7,8 @@ require_once "../app/controllers/ShipperController.php";
 require_once "../app/controllers/DashboardController.php";
 require_once "../app/controllers/AssignmentController.php";
 require_once "../app/controllers/UserController.php";
+require_once "../app/controllers/RevenueController.php";
+require_once "../app/controllers/ProfileController.php";
 
 $action = $_GET['action'] ?? 'home';
 
@@ -167,6 +169,30 @@ case 'user_delete':
     require_once "../app/controllers/UserController.php";
     $controller = new UserController();
     $controller->delete();
+break;
+
+case 'revenue':
+    (new RevenueController())->index();
+break;
+
+case 'profile':
+    (new ProfileController())->show();
+break;
+
+case 'editProfile':
+    (new ProfileController())->edit();
+break;
+
+case 'updateProfile':
+    (new ProfileController())->update();
+break;
+
+case 'changePassword':
+    (new ProfileController())->changePassword();
+break;
+
+case 'updatePassword':
+    (new ProfileController())->updatePassword();
 break;
 
 default: echo "404";

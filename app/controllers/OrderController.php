@@ -8,12 +8,26 @@ require_once "../app/libs/AuthMiddleware.php";
 
 class OrderController {
 
-    public function index() {
-        AuthMiddleware::role(['admin','operator']);
-        $orders = (new Order())->getAll();
-        $shippers = (new Shipper())->getAll();
-        $statuses = (new OrderStatus())->getAll();
-        require "../app/views/orders/index.php";
+    public function index()
+    {
+    AuthMiddleware::role(['admin','operator']);
+
+    $keyword = $_GET['keyword'] ?? '';
+
+    $status = $_GET['status'] ?? '';
+
+    $orderModel = new Order();
+
+    $orders = $orderModel->searchAndFilter(
+        $keyword,
+        $status
+    );
+
+    $shippers = (new Shipper())->getAll();
+
+    $statuses = (new OrderStatus())->getAll();
+
+    require "../app/views/orders/index.php";
     }
 
     public function create()
@@ -182,69 +196,10 @@ class OrderController {
         (new Assignment())->assign($order_id, $shipper['shipper_id']);
     }
 
-    public function updateStatus()
-    {
-        AuthMiddleware::role([
-            'admin',
-            'operator',
-            'shipper'
-        ]);
-
-        require_once "../app/config/database.php";
-
-        $db = (new Database())->connect();
-
-        $order_id = $_POST['order_id'];
-        $status_id = $_POST['status_id'];
-
-        // Nếu là shipper -> chỉ được update đơn của chính mình
-        if($_SESSION['user']['role'] == 'shipper'){
-
-            $shipper_id = $_SESSION['user']['shipper_id'];
-
-            $check = $db->prepare("
-                SELECT *
-                FROM assignment
-                WHERE order_id = ?
-                AND shipper_id = ?
-            ");
-
-            $check->execute([
-                $order_id,
-                $shipper_id
-            ]);
-
-            if(!$check->fetch()){
-
-                die("403 - Không có quyền");
-
-            }
-        }
-
-        $sql = "UPDATE orders
-                SET status_id = ?
-                WHERE order_id = ?";
-
-        $stmt = $db->prepare($sql);
-
-        $stmt->execute([
-            $status_id,
-            $order_id
-        ]);
-
-        // Admin/operator quay về orders
-        if($_SESSION['user']['role'] != 'shipper'){
-
-            header("Location: index.php?action=orders");
-
-        }else{
-
-            // shipper quay về đơn của tôi
-            header("Location: index.php?action=my_orders");
-
-        }
-
-        exit;
+    public function updateStatus() {
+        AuthMiddleware::role(['admin','operator']);
+        (new Order())->updateStatus($_POST['id'], $_POST['status']);
+        header("Location: index.php?action=orders");
     }
 
 

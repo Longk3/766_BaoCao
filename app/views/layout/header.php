@@ -217,6 +217,17 @@ Quản lý shipper
 Quản lý nhân viên
 </a>
 
+<a href="?action=revenue">
+    <i class="bi bi-bar-chart-line"></i>
+    Báo cáo doanh thu
+</a>
+
+<a href="?action=profile">
+<i class="bi bi-person-circle"></i>
+Tài khoản cá nhân
+</a>
+
+
 <?php endif; ?>
 
 
@@ -239,6 +250,12 @@ Quản lý đơn hàng
 Quản lý khách hàng
 </a>
 
+<a href="?action=profile">
+<i class="bi bi-person-circle"></i>
+Tài khoản cá nhân
+</a>
+
+
 <?php endif; ?>
 
 
@@ -255,6 +272,12 @@ Quản lý khách hàng
 <i class="bi bi-clock-history"></i>
 Lịch sử giao hàng
 </a>
+
+<a href="?action=profile">
+<i class="bi bi-person-circle"></i>
+Tài khoản cá nhân
+</a>
+
 
 <?php endif; ?>
 
